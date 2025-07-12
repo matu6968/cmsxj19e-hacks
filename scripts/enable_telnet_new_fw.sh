@@ -10,12 +10,12 @@ echo ""
 
 # Check if ROOTFS.bin exists
 if [ ! -f "ROOTFS.bin" ]; then
-    echo "ERROR: ROOTFS.bin not found!"
-    echo "Please extract the rootfs from your camera first."
-    echo "You can either:"
-    echo "1. Use a flash dump: dd if=flash_dump_16MiB.dump of=ROOTFS.bin bs=1 count=7733248 skip=2424832"
-    echo "2. Extract from camera via U-Boot: sf read 0x22000000 0x250000 0x760000"
-    exit 1
+    echo "Downloading 3.x firmware dump..."
+    wget https://github.com/cstrassburg/cmsxj19e-hacks/files/9386855/dump.with_log.zip
+    unzip -j dump.with_log.zip flash_dump_16MiB.dump
+    dd if=flash_dump_16MiB.dump of=ROOTFS.bin bs=1 count=7733248 skip=2424832
+    rm -rf dump.with_log.zip
+    echo "✓ 3.x firmware dump downloaded and extracted successfully"
 fi
 
 # Check if telnet binary exists
@@ -82,10 +82,11 @@ echo ""
 echo "=== SUCCESS! ==="
 echo ""
 echo "Next steps:"
-echo "1. Copy NEW_ROOTFS.bin to your SD card"
-echo "2. Insert SD card into camera"
-echo "3. Boot into U-Boot console (hold ENTER during boot)"
-echo "4. Run these commands in U-Boot:"
+echo "1. Flash the full firmware image (flash_dump_16MiB.bin) to your camera in order to get a serial console"
+echo "2. Copy NEW_ROOTFS.bin to your SD card"
+echo "3. Insert SD card into camera"
+echo "4. Boot into U-Boot console (hold ENTER during boot)"
+echo "5. Run these commands in U-Boot:"
 echo ""
 echo "   fatload mmc 0 0x030000000 NEW_ROOTFS.bin"
 echo "   sf probe"
@@ -93,7 +94,7 @@ echo "   sf erase 0x250000 0x760000"
 echo "   sf write 0x030000000 0x250000 0x760000"
 echo "   reset"
 echo ""
-echo "5. After reboot, connect via telnet:"
+echo "6. After reboot, connect via telnet:"
 echo "   telnet <camera_ip> 23"
 echo "   Login: root (no password)"
 echo ""
