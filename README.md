@@ -1,22 +1,10 @@
 # Xiaomi imilab A1 Camera hacks (cmsxj19e - ipc019e)
 
-!!! This project is currently under development and works only up to Frimware 3.8.5_0165 !!!
-
-Don't upgrade the camera to firmware 3.5.8_0166 !!! 
-
-On firmware 3.5.8_0166 Imilab changes the public key and the bootloader, so you can not easy downgrade and this scripts are not working.
-
-If you can get a telnet connection to the camera, great, you can do anything with that.Downgrade, patch RootFS, change DATA partition, backup the firmware... How, you can find out here
-
-If your camera does not open a telnet port, there are other ways to change it initially. I have meanwhile worked out several ways, which you can find here. One is to use the SPI programmer CH341a, the second is to use the serial console and a TTL adapter. Both require disassembling the camera. I am still working on a way without having to open the camera. If you have an idea, let me know. 
-
-These ways described here work not only for the Xiaomi imilab A1 but probably for all Xiaomi Imilab cameras as they are very similar. I can't test it though, as I don't have them.
-
-If your cam is on this firmware look into "modifying firmware > 3.5.8_0165"
-
+### Note: A new method to permanently enable telnet access by modifying the camera's rootfs is now available. If you have a camera with firmware 3.5.8_0166 or greater, see the alternative method below.
 
 - [supported devices](#supported-devices)
 - [How To](#how-to)
+- [Alternative Method: RootFS Modification](#alternative-method-rootfs-modification)
 - [next steps](#next-steps)
 - [device information](#device-information)
 - [serial connection](SERIAL_CONSOLE.md)
@@ -51,7 +39,7 @@ If everything works, the script "manu_test/entrypoint.sh" is called and a Telnet
 You are root!
 
 
-For the second and third way, the camera must be disassembled. How to do this is described here. [Instructions](DISASSEMBLE_CAMERA.md) 
+For the second way, the camera must be disassembled. How to do this is described here. [Instructions](DISASSEMBLE_CAMERA.md) 
 
 Now you need a UART USB converter, such as the pl2303 converter or an SPI programmer, such as the ch341a.
 
@@ -87,6 +75,38 @@ You are root!
 9. reboot
 
 
+## Alternative Method: RootFS Modification
+
+If the original SD card exploit fails due to RSA signature verification errors because you have a camera with firmware 3.5.8_0166 or greater, you can use this alternative method to permanently enable telnet access by modifying the camera's rootfs.
+
+Note: This method is requires opening the camera.
+
+### Quick Start
+
+1. **Extract your camera's rootfs** (from flash dump or via U-Boot)
+2. **Run the automated script**:
+   ```bash
+   ./enable_telnet.sh
+   ```
+3. **Flash the modified rootfs** using U-Boot
+4. **Connect via telnet**: `telnet <camera_ip> 23`
+
+### Detailed Instructions
+
+For complete step-by-step instructions, see [TELNET_ENABLE_GUIDE.md](TELNET_ENABLE_GUIDE.md)
+
+This method:
+- ✅ Bypasses RSA signature verification issues
+- ✅ Provides permanent telnet access
+- ✅ Maintains all original camera functionality
+- ✅ Works with firmware ≥ 3.5.8_0165
+
+### Prerequisites
+
+- USB-to-UART adapter for U-Boot access
+- SD card and CH341A programmer for flashing
+- Linux system with `squashfs-tools`
+
 ## next steps
 
 1. rtsp
@@ -99,50 +119,7 @@ You are root!
 ## Serial connection
 
 
-
 [output 1](serial_output_1.txt)
-
-## Firmware Hack
-
-If you have firmware version greater than 3.5.8_0165 you have to modify the firmware reading, changing and writing rhe flash rom directly.
-
-Imilab changes the key inside the firmware and signed it, so you can't downgrade the firmware and can't apply this scripts directy (for the moment).
-
-1. disassembly the camera
-2. read flash 
-3. modify flash
-4. write flash 
-5. test 
-6. assembly the camera
-7. boot and root
-
-### What do you need 
-
-- ch341a SPI programmer
-- linux system 
-
-### Steps
-
-#### disassembly the camera
-
-#### read the flashrom
-```
-sudo flashrom --programmer ch341a_spi -c "MX25L12835F/MX25L12845E/MX25L12865E" -r backup2.bin
-```
-
-#### modify the flashrom 
-
-#### write the flashrom
-
-#### test
-
-Allways test before you assembly the system
-
-
-#### assembly the camera
-
-#### boot and root
-
 
 
 ## Device information
