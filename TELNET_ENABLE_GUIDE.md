@@ -5,7 +5,8 @@ This guide shows how to enable telnet access on the Xiaomi imilab A1 camera (cms
 ## Prerequisites
 
 - Xiaomi imilab A1 camera (cmsxj19e) (any firmware version since the flash chip contents will be modified during the process)
-- USB-to-UART adapter (PL2303, CH340, or FT232)
+- USB-to-UART adapter (PL2303, CH340/CH341, or FT232)
+- SPI flash chip reader (CH341A)
 - SD card (FAT32 formatted)
 - Linux system with required tools
 
