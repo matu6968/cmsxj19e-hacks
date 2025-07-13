@@ -4,11 +4,10 @@
 
 - [supported devices](#supported-devices)
 - [How To](#how-to)
-- [Alternative Method: RootFS Modification](#alternative-method-rootfs-modification)
 - [next steps](#next-steps)
 - [device information](#device-information)
 - [serial connection](SERIAL_CONSOLE.md)
-- [modifying firmware > 3.5.8_0165](#firmware-hack)
+- [modifying firmware > 3.5.8_0165](#alternative-method-rootfs-modification)
 - [bootloader](#bootloader)
 - 
 ## Supported devices
@@ -38,15 +37,6 @@ If everything works, the script "manu_test/entrypoint.sh" is called and a Telnet
 6. login as "root", password "" 
 You are root!
 
-
-For the second way, the camera must be disassembled. How to do this is described here. [Instructions](DISASSEMBLE_CAMERA.md) 
-
-Now you need a UART USB converter, such as the pl2303 converter or an SPI programmer, such as the ch341a.
-
-
-
-- 
-
 ### With Mi Home App
 
 1. Configure the camera using the Mi Home app
@@ -74,6 +64,7 @@ You are root!
 8. 
 9. reboot
 
+For the second way, the camera must be disassembled. How to do this is described here. [Instructions](DISASSEMBLE_CAMERA.md) 
 
 ## Alternative Method: RootFS Modification
 
